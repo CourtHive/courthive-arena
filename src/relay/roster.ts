@@ -80,6 +80,25 @@ export function getPlayerOrFallback(participantId: string): PlayerInfo {
   };
 }
 
+/**
+ * Merge roster data from an intennse relay snapshot into the cache.
+ * The relay carries a `roster` map so arena clients can resolve IDs
+ * without needing a factory server fetch.
+ */
+export function mergeRelayRoster(roster: Record<string, any>): void {
+  for (const [id, detail] of Object.entries(roster)) {
+    if (!rosterCache.has(id)) {
+      rosterCache.set(id, {
+        participantId: id,
+        participantName: detail.participantName ?? id.slice(0, 8),
+        jerseyNumber: detail.jerseyNumber,
+        imageUrl: detail.imageUrl,
+        sideNumber: detail.sideNumber,
+      });
+    }
+  }
+}
+
 export function clearRoster(): void {
   rosterCache.clear();
   cachedTournamentId = undefined;

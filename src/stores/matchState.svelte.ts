@@ -3,6 +3,7 @@
  * Receives intennse snapshots from the relay and exposes
  * the current scoreboard state for display components.
  */
+import { mergeRelayRoster } from '../relay/roster';
 
 export interface ClockState {
   boltTimerRemainingMs: number;
@@ -82,6 +83,11 @@ export function applyIntennseSnapshot(data: any): void {
   state.matchUpStatus = data.matchUpStatus ?? state.matchUpStatus;
   state.winningSide = data.winningSide ?? state.winningSide;
   state.lastSnapshot = data;
+
+  // Merge roster from relay snapshot into the cache
+  if (data.roster) {
+    mergeRelayRoster(data.roster);
+  }
 
   // Update clocks from snapshot
   if (typeof data.boltTimerRemainingMs === 'number') {

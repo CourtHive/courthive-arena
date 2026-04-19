@@ -1,6 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 
-const RELAY_URL = import.meta.env.VITE_RELAY_URL || 'http://localhost:8384';
+// Default to same hostname as the page, port 8384 — works on LAN without config
+const RELAY_URL = import.meta.env.VITE_RELAY_URL || `http://${window.location.hostname}:8384`;
 
 let socket: Socket | null = null;
 

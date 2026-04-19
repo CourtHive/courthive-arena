@@ -4,7 +4,8 @@
  * and image URL from onlineResources.
  */
 
-const FACTORY_URL = import.meta.env.VITE_FACTORY_URL || 'http://localhost:8383';
+// Default to same hostname as the page, port 8383 — works on LAN without config
+const FACTORY_URL = import.meta.env.VITE_FACTORY_URL || `http://${window.location.hostname}:8383`;
 
 export interface PlayerInfo {
   participantId: string;

@@ -106,6 +106,77 @@ export function subscribeToTournament(tournamentId: string): RelaySubscription {
   };
 }
 
+export interface ActiveMatchInfo {
+  matchUpId: string;
+  side1Name?: string;
+  side2Name?: string;
+  categoryLabel?: string;
+  matchUpStatus?: string;
+  boltScore?: { side1: number; side2: number };
+  arcScore?: { side1: number; side2: number };
+}
+
+/**
+ * Subscribe to all active matches. Returns the match list and
+ * enriches entries as intennse/score events arrive.
+ */
+export function subscribeAll(onChange: (matches: ActiveMatchInfo[]) => void): () => void {
+  const s = connect();
+  const matchMap = new Map<string, ActiveMatchInfo>();
+
+  s.emit('subscribe:all');
+
+  function notify() {
+    onChange(Array.from(matchMap.values()));
+  }
+
+  function handleActive(matchIds: string[]) {
+    // Seed entries for new IDs, remove stale ones
+    const current = new Set(matchIds);
+    for (const id of matchMap.keys()) {
+      if (!current.has(id)) matchMap.delete(id);
+    }
+    for (const id of matchIds) {
+      if (!matchMap.has(id)) {
+        matchMap.set(id, { matchUpId: id });
+      }
+    }
+    notify();
+  }
+
+  function handleIntennse(data: any) {
+    if (!data?.matchUpId) return;
+    const existing = matchMap.get(data.matchUpId) ?? { matchUpId: data.matchUpId };
+    existing.side1Name = data.side1Name ?? existing.side1Name;
+    existing.side2Name = data.side2Name ?? existing.side2Name;
+    existing.categoryLabel = data.categoryLabel ?? existing.categoryLabel;
+    existing.matchUpStatus = data.matchUpStatus ?? existing.matchUpStatus;
+    existing.boltScore = data.boltScore ?? existing.boltScore;
+    existing.arcScore = data.aggregateScore ?? data.arcScore ?? existing.arcScore;
+    matchMap.set(data.matchUpId, existing);
+    notify();
+  }
+
+  function handleScore(data: any) {
+    if (!data?.matchUpId) return;
+    const existing = matchMap.get(data.matchUpId) ?? { matchUpId: data.matchUpId };
+    existing.matchUpStatus = data.matchUpStatus ?? existing.matchUpStatus;
+    matchMap.set(data.matchUpId, existing);
+    notify();
+  }
+
+  s.on('active', handleActive);
+  s.on('intennse', handleIntennse);
+  s.on('score', handleScore);
+
+  return () => {
+    s.emit('unsubscribe:all');
+    s.off('active', handleActive);
+    s.off('intennse', handleIntennse);
+    s.off('score', handleScore);
+  };
+}
+
 export function disconnect(): void {
   socket?.disconnect();
   socket = null;

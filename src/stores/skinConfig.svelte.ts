@@ -91,7 +91,9 @@ function loadConfig(): SkinConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return { ...DEFAULT_CONFIG, ...JSON.parse(raw) };
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   return { ...DEFAULT_CONFIG };
 }
 
@@ -103,6 +105,11 @@ function persist() {
 
 export function getSkinConfig() {
   return config;
+}
+
+/** Reset to defaults — used by tests */
+export function resetSkinConfig() {
+  config = { ...DEFAULT_CONFIG, customColors: {} };
 }
 
 export function setSkin(skin: SkinName) {

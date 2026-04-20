@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Clock from './Clock.svelte';
   import PlayerCard from './PlayerCard.svelte';
   import PenaltyBox from './PenaltyBox.svelte';
   import BreakOverlay from './BreakOverlay.svelte';
@@ -72,6 +71,14 @@
   onDestroy(() => {
     subscription?.unsubscribe();
   });
+
+  function formatMs(ms: number): string {
+    if (ms <= 0) return '0:00';
+    const totalSeconds = Math.ceil(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
 </script>
 
 <div class="scoreboard">
@@ -98,13 +105,15 @@
           {#if match.boltScore}
             <div class="bolt-score">{match.boltScore.side1}</div>
           {/if}
-          <div class="score-label">ARC / BOLT</div>
         </div>
       </div>
 
-      <!-- Center: clocks + serve indicator + penalty box -->
+      <!-- Center: bolt clock, serve indicator, category, serve clock, penalty box -->
       <div class="center-column">
-        <Clock clock={match.clock} />
+        <div class="clock-block">
+          <div class="clock-heading">BOLT</div>
+          <div class="clock-time" class:clock-active={match.clock.activeClock === 'bolt'}>{formatMs(match.clock.boltTimerRemainingMs)}</div>
+        </div>
         {#if match.server !== undefined}
           <div class="serve-indicator">
             <span class="serve-arrow" class:serve-left={match.server === 0}>◀</span>
@@ -114,6 +123,22 @@
         {/if}
         {#if match.lastSnapshot?.categoryLabel}
           <div class="category-label">{match.lastSnapshot.categoryLabel}</div>
+        {/if}
+        <div class="clock-block">
+          <div class="clock-heading">SERVE</div>
+          <div class="clock-time">{formatMs(match.clock.serveClockRemainingMs)}</div>
+        </div>
+        {#if match.clock.activeClock === 'timeout' && match.clock.timeoutRemainingMs !== undefined}
+          <div class="clock-block clock-active">
+            <div class="clock-heading">TIMEOUT</div>
+            <div class="clock-time">{formatMs(match.clock.timeoutRemainingMs)}</div>
+          </div>
+        {/if}
+        {#if match.clock.activeClock === 'break' && match.clock.breakRemainingMs !== undefined}
+          <div class="clock-block clock-active">
+            <div class="clock-heading">BREAK</div>
+            <div class="clock-time">{formatMs(match.clock.breakRemainingMs)}</div>
+          </div>
         {/if}
         <PenaltyBox penalties={match.penaltyBox ?? []} />
       </div>
@@ -129,7 +154,6 @@
           {#if match.boltScore}
             <div class="bolt-score">{match.boltScore.side2}</div>
           {/if}
-          <div class="score-label">ARC / BOLT</div>
         </div>
       </div>
     </div>
@@ -151,8 +175,8 @@
   .play-layout {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    gap: 3em;
-    align-items: start;
+    gap: 2em;
+    align-items: center;
     width: 100%;
     max-width: 1400px;
   }
@@ -160,7 +184,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1em;
+    gap: 0.75em;
+    min-width: 0;
   }
   .team-name {
     font-size: 1.6em;
@@ -174,8 +199,8 @@
   }
   .side-score {
     display: flex;
-    align-items: baseline;
-    gap: 0.4em;
+    flex-direction: column;
+    align-items: center;
   }
   .arc-score {
     font-size: 4em;
@@ -184,20 +209,41 @@
     line-height: 1;
   }
   .bolt-score {
-    font-size: 2em;
+    font-size: 1.4em;
     font-weight: 600;
     opacity: 0.4;
     font-variant-numeric: tabular-nums;
-  }
-  .score-label {
-    display: none;
+    margin-top: 0.15em;
   }
   .center-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1em;
-    min-width: 260px;
+    gap: 0.6em;
+    min-width: 200px;
+  }
+  .clock-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .clock-heading {
+    font-size: 0.7em;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  }
+  .clock-time {
+    font-size: 2.8em;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    line-height: 1.1;
+  }
+  .clock-active .clock-time,
+  .clock-active.clock-time {
+    color: var(--arena-accent, #00e676);
   }
   .serve-indicator {
     display: flex;
@@ -223,7 +269,7 @@
     text-align: center;
   }
   .category-label {
-    font-size: 0.85em;
+    font-size: 0.8em;
     opacity: 0.4;
     letter-spacing: 0.1em;
     text-align: center;

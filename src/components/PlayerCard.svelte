@@ -52,6 +52,7 @@
     border-radius: 0.5em;
     background: rgba(255, 255, 255, 0.05);
     position: relative;
+    width: 100%;
   }
   .player-card.serving {
     background: rgba(255, 255, 255, 0.1);
@@ -96,11 +97,13 @@
     color: rgba(255, 255, 255, 0.6);
   }
   .name {
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: 600;
-    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .compact .name {
     font-size: 0.9em;

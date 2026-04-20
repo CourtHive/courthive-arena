@@ -124,14 +124,23 @@ export function subscribeAll(onChange: (matches: ActiveMatchInfo[]) => void): ()
   const s = connect();
   const matchMap = new Map<string, ActiveMatchInfo>();
 
-  s.emit('subscribe:all');
+  function emitSubscribe() {
+    s.emit('subscribe:all');
+  }
+
+  // Emit after connect — Socket.IO buffers but the relay only responds
+  // to subscribe:all when the socket is in the /live room, which requires
+  // a completed connection handshake.
+  if (s.connected) {
+    emitSubscribe();
+  }
+  s.on('connect', emitSubscribe);
 
   function notify() {
     onChange(Array.from(matchMap.values()));
   }
 
   function handleActive(matchIds: string[]) {
-    // Seed entries for new IDs, remove stale ones
     const current = new Set(matchIds);
     for (const id of matchMap.keys()) {
       if (!current.has(id)) matchMap.delete(id);
@@ -139,6 +148,9 @@ export function subscribeAll(onChange: (matches: ActiveMatchInfo[]) => void): ()
     for (const id of matchIds) {
       if (!matchMap.has(id)) {
         matchMap.set(id, { matchUpId: id });
+        // Subscribe to each match to get current state (relay sends
+        // last known score on subscribe)
+        s.emit('subscribe', id);
       }
     }
     notify();
@@ -171,6 +183,7 @@ export function subscribeAll(onChange: (matches: ActiveMatchInfo[]) => void): ()
 
   return () => {
     s.emit('unsubscribe:all');
+    s.off('connect', emitSubscribe);
     s.off('active', handleActive);
     s.off('intennse', handleIntennse);
     s.off('score', handleScore);

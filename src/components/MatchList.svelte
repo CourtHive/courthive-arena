@@ -31,26 +31,26 @@
     <div class="matches">
       {#each matches as match}
         <button class="match-card" onclick={() => onSelect(match.matchUpId)}>
-          <div class="match-teams">
-            <span class="team">{match.side1Name ?? '—'}</span>
-            <span class="vs">vs</span>
-            <span class="team">{match.side2Name ?? '—'}</span>
-          </div>
-          {#if match.arcScore}
-            <div class="match-score">
-              <span>{match.arcScore.side1}</span>
-              <span class="score-divider">–</span>
-              <span>{match.arcScore.side2}</span>
+          <div class="match-top-row">
+            <div class="match-teams">
+              <span class="team">{match.side1Name ?? match.matchUpId.slice(0, 8)}</span>
+              <span class="vs">vs</span>
+              <span class="team">{match.side2Name ?? '...'}</span>
             </div>
-          {/if}
-          {#if match.categoryLabel}
-            <div class="match-category">{match.categoryLabel}</div>
-          {/if}
-          {#if match.matchUpStatus === 'COMPLETED'}
-            <div class="match-badge">FINAL</div>
-          {:else}
-            <div class="match-badge match-badge--live">LIVE</div>
-          {/if}
+            {#if match.arcScore}
+              <div class="match-score">{match.arcScore.side1}–{match.arcScore.side2}</div>
+            {/if}
+          </div>
+          <div class="match-bottom-row">
+            {#if match.categoryLabel}
+              <span class="match-category">{match.categoryLabel}</span>
+            {/if}
+            {#if match.matchUpStatus === 'COMPLETED'}
+              <span class="match-badge">FINAL</span>
+            {:else}
+              <span class="match-badge match-badge--live">LIVE</span>
+            {/if}
+          </div>
         </button>
       {/each}
     </div>
@@ -117,15 +117,21 @@
     opacity: 0.4;
     text-transform: uppercase;
   }
-  .match-score {
+  .match-top-row {
     display: flex;
-    gap: 0.4em;
-    font-size: 1.5em;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .match-score {
+    font-size: 1.3em;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
   }
-  .score-divider {
-    opacity: 0.3;
+  .match-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   .match-category {
     font-size: 0.8em;
@@ -133,9 +139,6 @@
     letter-spacing: 0.05em;
   }
   .match-badge {
-    position: absolute;
-    top: 1em;
-    right: 1em;
     font-size: 0.65em;
     font-weight: 700;
     letter-spacing: 0.15em;

@@ -27,18 +27,18 @@
 </script>
 
 <div class="clock-panel">
-  <div class="clock-row">
-    <span class="clock-label">BOLT</span>
-    <span class="clock-value" class:clock-active={activeClock === 'bolt'}>{boltDisplay}</span>
+  <div class="clock-block" class:clock-active={activeClock === 'bolt'}>
+    <div class="clock-label">BOLT</div>
+    <div class="clock-value">{boltDisplay}</div>
   </div>
-  <div class="clock-row">
-    <span class="clock-label">SERVE</span>
-    <span class="clock-value">{serveDisplay}</span>
+  <div class="clock-block">
+    <div class="clock-label">SERVE</div>
+    <div class="clock-value">{serveDisplay}</div>
   </div>
   {#if secondaryDisplay()}
-    <div class="clock-row clock-secondary">
-      <span class="clock-label">{secondaryDisplay()!.label}</span>
-      <span class="clock-value clock-active">{secondaryDisplay()!.value}</span>
+    <div class="clock-block clock-active clock-secondary">
+      <div class="clock-label">{secondaryDisplay()!.label}</div>
+      <div class="clock-value">{secondaryDisplay()!.value}</div>
     </div>
   {/if}
 </div>
@@ -46,33 +46,36 @@
 <style>
   .clock-panel {
     display: flex;
-    flex-direction: column;
-    gap: 0.25em;
+    gap: 2em;
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    align-items: flex-start;
   }
-  .clock-row {
+  .clock-block {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1em;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15em;
   }
   .clock-label {
-    font-size: 0.9em;
-    opacity: 0.6;
+    font-size: 0.75em;
+    opacity: 0.5;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
   }
   .clock-value {
     font-size: 3em;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
+    line-height: 1;
   }
-  .clock-active {
+  .clock-active .clock-value {
     color: var(--arena-accent, #00e676);
   }
+  .clock-active .clock-label {
+    opacity: 0.8;
+  }
   .clock-secondary {
-    margin-top: 0.5em;
-    padding-top: 0.5em;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-left: 2em;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
   }
 </style>

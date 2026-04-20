@@ -30,7 +30,10 @@ export interface MatchState {
   boltScore?: { side1: number; side2: number };
   arcScore?: { side1: number; side2: number };
   activePlayers?: { side1?: string; side2?: string };
-  servingSide?: number;
+  /** 0-indexed: 0 = side 1 serving, 1 = side 2 serving */
+  server?: number;
+  /** "DEUCE" or "AD" */
+  serveSide?: string;
   penaltyBox?: any[];
 
   // Clocks (updated by ticks at 10Hz)
@@ -76,9 +79,10 @@ export function applyIntennseSnapshot(data: any): void {
   state.scoreStringSide2 = data.scoreStringSide2 ?? state.scoreStringSide2;
   state.sets = data.sets ?? state.sets;
   state.boltScore = data.boltScore ?? state.boltScore;
-  state.arcScore = data.arcScore ?? state.arcScore;
+  state.arcScore = data.aggregateScore ?? data.arcScore ?? state.arcScore;
   state.activePlayers = data.activePlayers ?? state.activePlayers;
-  state.servingSide = data.servingSide ?? state.servingSide;
+  state.server = data.server ?? state.server;
+  state.serveSide = data.serveSide ?? state.serveSide;
   state.penaltyBox = data.penaltyBox ?? state.penaltyBox;
   state.matchUpStatus = data.matchUpStatus ?? state.matchUpStatus;
   state.winningSide = data.winningSide ?? state.winningSide;

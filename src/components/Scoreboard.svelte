@@ -89,21 +89,29 @@
     <div class="play-layout">
       <!-- Side 1 -->
       <div class="side-column">
-        <div class="team-name">{match.side1Name ?? 'Team 1'}</div>
+        <div class="team-name" class:serving={match.server === 0}>{match.side1Name ?? 'Team 1'}</div>
         {#if side1Player()}
-          <PlayerCard player={side1Player()!} side={1} isServing={match.servingSide === 1} />
+          <PlayerCard player={side1Player()!} side={1} isServing={match.server === 0} />
         {/if}
         <div class="side-score">
           <div class="arc-score">{match.arcScore?.side1 ?? 0}</div>
           {#if match.boltScore}
-            <div class="bolt-score">Bolt: {match.boltScore.side1}</div>
+            <div class="bolt-score">{match.boltScore.side1}</div>
           {/if}
+          <div class="score-label">ARC / BOLT</div>
         </div>
       </div>
 
-      <!-- Center: clocks + penalty box -->
+      <!-- Center: clocks + serve indicator + penalty box -->
       <div class="center-column">
         <Clock clock={match.clock} />
+        {#if match.server !== undefined}
+          <div class="serve-indicator">
+            <span class="serve-arrow" class:serve-left={match.server === 0}>◀</span>
+            <span class="serve-court">{match.serveSide === 'AD' ? 'AD' : 'DEUCE'}</span>
+            <span class="serve-arrow" class:serve-right={match.server === 1}>▶</span>
+          </div>
+        {/if}
         {#if match.lastSnapshot?.categoryLabel}
           <div class="category-label">{match.lastSnapshot.categoryLabel}</div>
         {/if}
@@ -112,15 +120,16 @@
 
       <!-- Side 2 -->
       <div class="side-column">
-        <div class="team-name">{match.side2Name ?? 'Team 2'}</div>
+        <div class="team-name" class:serving={match.server === 1}>{match.side2Name ?? 'Team 2'}</div>
         {#if side2Player()}
-          <PlayerCard player={side2Player()!} side={2} isServing={match.servingSide === 2} />
+          <PlayerCard player={side2Player()!} side={2} isServing={match.server === 1} />
         {/if}
         <div class="side-score">
           <div class="arc-score">{match.arcScore?.side2 ?? 0}</div>
           {#if match.boltScore}
-            <div class="bolt-score">Bolt: {match.boltScore.side2}</div>
+            <div class="bolt-score">{match.boltScore.side2}</div>
           {/if}
+          <div class="score-label">ARC / BOLT</div>
         </div>
       </div>
     </div>
@@ -158,12 +167,15 @@
     font-weight: 700;
     text-align: center;
     letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .team-name.serving {
+    color: var(--arena-accent, #00e676);
   }
   .side-score {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25em;
+    align-items: baseline;
+    gap: 0.4em;
   }
   .arc-score {
     font-size: 4em;
@@ -172,17 +184,43 @@
     line-height: 1;
   }
   .bolt-score {
-    font-size: 1.2em;
+    font-size: 2em;
     font-weight: 600;
-    opacity: 0.5;
+    opacity: 0.4;
     font-variant-numeric: tabular-nums;
+  }
+  .score-label {
+    display: none;
   }
   .center-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5em;
-    min-width: 240px;
+    gap: 1em;
+    min-width: 260px;
+  }
+  .serve-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    font-size: 1.1em;
+    font-weight: 700;
+  }
+  .serve-arrow {
+    opacity: 0.15;
+    font-size: 0.9em;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .serve-arrow.serve-left,
+  .serve-arrow.serve-right {
+    opacity: 1;
+    color: var(--arena-accent, #00e676);
+  }
+  .serve-court {
+    letter-spacing: 0.15em;
+    font-size: 0.9em;
+    min-width: 4em;
+    text-align: center;
   }
   .category-label {
     font-size: 0.85em;

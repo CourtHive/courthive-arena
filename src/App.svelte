@@ -2,24 +2,28 @@
   import Scoreboard from './components/Scoreboard.svelte';
   import MatchList from './components/MatchList.svelte';
   import { disconnect } from './relay/client';
+  import { applyUrlOverrides, applyTheme } from './stores/skinConfig.svelte';
+
+  applyUrlOverrides();
+  applyTheme();
 
   // Match ID from URL query param: ?match=<id>
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(globalThis.location.search);
   let matchUpId = $state(params.get('match') || '');
 
   function selectMatch(id: string) {
     matchUpId = id;
-    const url = new URL(window.location.href);
+    const url = new URL(globalThis.location.href);
     url.searchParams.set('match', matchUpId);
-    window.history.replaceState({}, '', url.toString());
+    globalThis.history.replaceState({}, '', url.toString());
   }
 
   function goBack() {
     disconnect();
     matchUpId = '';
-    const url = new URL(window.location.href);
+    const url = new URL(globalThis.location.href);
     url.searchParams.delete('match');
-    window.history.replaceState({}, '', url.toString());
+    globalThis.history.replaceState({}, '', url.toString());
   }
 </script>
 

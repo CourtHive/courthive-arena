@@ -57,13 +57,13 @@
     gap: 1em;
   }
   .clock-label {
-    font-size: 0.7em;
+    font-size: 0.9em;
     opacity: 0.6;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
   }
   .clock-value {
-    font-size: 1.8em;
+    font-size: 3em;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
   }

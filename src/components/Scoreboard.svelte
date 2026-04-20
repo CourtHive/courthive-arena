@@ -1,6 +1,5 @@
 <script lang="ts">
   import Clock from './Clock.svelte';
-  import ScorePanel from './ScorePanel.svelte';
   import PlayerCard from './PlayerCard.svelte';
   import PenaltyBox from './PenaltyBox.svelte';
   import BreakOverlay from './BreakOverlay.svelte';
@@ -24,7 +23,6 @@
   let connected = $state(false);
   let rosterLoaded = $state(false);
 
-  // Derive view mode from match state
   let viewMode = $derived<'waiting' | 'play' | 'break' | 'complete'>(() => {
     if (!connected) return 'waiting';
     if (match.matchUpStatus === 'COMPLETED') return 'complete';
@@ -32,7 +30,6 @@
     return 'play';
   });
 
-  // Resolve active players from roster
   let side1Player = $derived(() => {
     const ids = match.lastSnapshot?.activePlayers?.side1;
     const id = Array.isArray(ids) ? ids[0] : ids;
@@ -53,7 +50,6 @@
       applyIntennseSnapshot(data);
       connected = true;
 
-      // Fetch roster on first snapshot if we have a tournamentId
       if (!rosterLoaded && data.tournamentId) {
         fetchRoster(data.tournamentId).then(() => { rosterLoaded = true; });
       }
@@ -89,33 +85,45 @@
   {:else if viewMode() === 'break'}
     <BreakOverlay {match} clock={match.clock} />
   {:else}
-    <!-- During-play layout -->
+    <!-- During-play: [Team 1 | Clocks | Team 2] -->
     <div class="play-layout">
-      <div class="main-content">
-        <div class="score-section">
-          <ScorePanel {match} />
-        </div>
-
-        <!-- Active players with jersey numbers -->
-        <div class="active-players">
-          {#if side1Player()}
-            <PlayerCard player={side1Player()!} side={1} isServing={match.servingSide === 1} />
-          {/if}
-          {#if side2Player()}
-            <PlayerCard player={side2Player()!} side={2} isServing={match.servingSide === 2} />
+      <!-- Side 1 -->
+      <div class="side-column">
+        <div class="team-name">{match.side1Name ?? 'Team 1'}</div>
+        {#if side1Player()}
+          <PlayerCard player={side1Player()!} side={1} isServing={match.servingSide === 1} />
+        {/if}
+        <div class="side-score">
+          <div class="arc-score">{match.arcScore?.side1 ?? 0}</div>
+          {#if match.boltScore}
+            <div class="bolt-score">Bolt: {match.boltScore.side1}</div>
           {/if}
         </div>
       </div>
 
-      <div class="side-panel">
+      <!-- Center: clocks + penalty box -->
+      <div class="center-column">
         <Clock clock={match.clock} />
+        {#if match.lastSnapshot?.categoryLabel}
+          <div class="category-label">{match.lastSnapshot.categoryLabel}</div>
+        {/if}
         <PenaltyBox penalties={match.penaltyBox ?? []} />
       </div>
-    </div>
-  {/if}
 
-  {#if match.lastSnapshot?.categoryLabel && viewMode() !== 'complete'}
-    <div class="category-bar">{match.lastSnapshot.categoryLabel}</div>
+      <!-- Side 2 -->
+      <div class="side-column">
+        <div class="team-name">{match.side2Name ?? 'Team 2'}</div>
+        {#if side2Player()}
+          <PlayerCard player={side2Player()!} side={2} isServing={match.servingSide === 2} />
+        {/if}
+        <div class="side-score">
+          <div class="arc-score">{match.arcScore?.side2 ?? 0}</div>
+          {#if match.boltScore}
+            <div class="bolt-score">Bolt: {match.boltScore.side2}</div>
+          {/if}
+        </div>
+      </div>
+    </div>
   {/if}
 </div>
 
@@ -130,30 +138,57 @@
     padding: 2em;
     color: var(--arena-text, #ffffff);
     background: var(--arena-bg, #0a0a0a);
-    position: relative;
   }
   .play-layout {
     display: grid;
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 1fr auto 1fr;
     gap: 3em;
     align-items: start;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
   }
-  .main-content {
+  .side-column {
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
-  }
-  .active-players {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    align-items: center;
     gap: 1em;
   }
-  .side-panel {
+  .team-name {
+    font-size: 1.6em;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .side-score {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 0.25em;
+  }
+  .arc-score {
+    font-size: 4em;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .bolt-score {
+    font-size: 1.2em;
+    font-weight: 600;
+    opacity: 0.5;
+    font-variant-numeric: tabular-nums;
+  }
+  .center-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1.5em;
+    min-width: 240px;
+  }
+  .category-label {
+    font-size: 0.85em;
+    opacity: 0.4;
+    letter-spacing: 0.1em;
+    text-align: center;
   }
   .waiting {
     text-align: center;
@@ -167,14 +202,5 @@
     font-family: monospace;
     font-size: 0.8em;
     opacity: 0.4;
-  }
-  .category-bar {
-    position: absolute;
-    bottom: 1em;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.8em;
-    opacity: 0.3;
-    letter-spacing: 0.1em;
   }
 </style>

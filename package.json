@@ -52,5 +52,18 @@
     "typescript": "^5.9.3",
     "vite": "^6.3.0",
     "vitest": "4.1.4"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@dep-tree/cli",
+      "@nestjs/core",
+      "@scarf/scarf",
+      "@swc/core",
+      "classic-level",
+      "core-js",
+      "esbuild",
+      "rollup",
+      "unrs-resolver"
+    ]
   }
 }

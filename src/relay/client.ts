@@ -158,7 +158,7 @@ export function subscribeAll(onChange: (matches: ActiveMatchInfo[]) => void): ()
 
   function handleIntennse(data: any) {
     if (!data?.matchUpId) return;
-    const existing = matchMap.get(data.matchUpId) ?? { matchUpId: data.matchUpId };
+    const existing: ActiveMatchInfo = matchMap.get(data.matchUpId) ?? { matchUpId: data.matchUpId };
     existing.side1Name = data.side1Name ?? existing.side1Name;
     existing.side2Name = data.side2Name ?? existing.side2Name;
     existing.categoryLabel = data.categoryLabel ?? existing.categoryLabel;
@@ -171,7 +171,7 @@ export function subscribeAll(onChange: (matches: ActiveMatchInfo[]) => void): ()
 
   function handleScore(data: any) {
     if (!data?.matchUpId) return;
-    const existing = matchMap.get(data.matchUpId) ?? { matchUpId: data.matchUpId };
+    const existing: ActiveMatchInfo = matchMap.get(data.matchUpId) ?? { matchUpId: data.matchUpId };
     existing.matchUpStatus = data.matchUpStatus ?? existing.matchUpStatus;
     matchMap.set(data.matchUpId, existing);
     notify();

@@ -5,7 +5,7 @@
 </script>
 
 <div class="score-panel">
-  <div class="team-row" class:serving={match.servingSide === 1}>
+  <div class="team-row" class:serving={match.server === 0}>
     <div class="team-name">{match.side1Name ?? 'Team 1'}</div>
     <div class="scores">
       {#if match.arcScore}
@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="team-row" class:serving={match.servingSide === 2}>
+  <div class="team-row" class:serving={match.server === 1}>
     <div class="team-name">{match.side2Name ?? 'Team 2'}</div>
     <div class="scores">
       {#if match.arcScore}

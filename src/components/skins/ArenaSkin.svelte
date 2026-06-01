@@ -7,7 +7,7 @@
 
   let { match, side1Player, side2Player, formatMs }: SkinProps = $props();
 
-  let viewMode = $derived<'waiting' | 'play' | 'break' | 'complete'>(() => {
+  let viewMode = $derived.by<'waiting' | 'play' | 'break' | 'complete'>(() => {
     if (match.matchUpStatus === 'COMPLETED') return 'complete';
     if (match.clock.activeClock === 'break') return 'break';
     return 'play';
@@ -15,9 +15,9 @@
 </script>
 
 <div class="arena-skin">
-  {#if viewMode() === 'complete'}
+  {#if viewMode === 'complete'}
     <MatchComplete {match} />
-  {:else if viewMode() === 'break'}
+  {:else if viewMode === 'break'}
     <BreakOverlay {match} clock={match.clock} />
   {:else}
     <div class="play-layout">
@@ -37,7 +37,9 @@
       <div class="center-column">
         <div class="clock-block">
           <div class="clock-heading">BOLT</div>
-          <div class="clock-time" class:clock-active={match.clock.activeClock === 'bolt'}>{formatMs(match.clock.boltTimerRemainingMs)}</div>
+          <div class="clock-time" class:clock-active={match.clock.activeClock === 'bolt'}>
+            {formatMs(match.clock.boltTimerRemainingMs)}
+          </div>
         </div>
         {#if match.server !== undefined}
           <div class="serve-indicator">
@@ -170,7 +172,9 @@
   .serve-arrow {
     opacity: 0.15;
     font-size: 0.9em;
-    transition: opacity 0.2s, color 0.2s;
+    transition:
+      opacity 0.2s,
+      color 0.2s;
   }
   .serve-arrow.serve-left,
   .serve-arrow.serve-right {

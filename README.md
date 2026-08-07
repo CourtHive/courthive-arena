@@ -25,7 +25,8 @@ pnpm dev               # vite dev server
 pnpm build             # production build → dist/
 pnpm preview           # preview production build
 pnpm check-types       # svelte-check
-pnpm lint              # ESLint with --fix --cache
+pnpm lint              # ESLint — non-mutating, fails on any warning
+pnpm lint:fix          # ESLint with auto-fix (rewrites source)
 pnpm test              # vitest (TZ=UTC, watch mode)
 pnpm test:run          # single run
 ```

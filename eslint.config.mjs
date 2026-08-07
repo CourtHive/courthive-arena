@@ -32,4 +32,14 @@ export default [
       'sonarjs/argument-type': 'off',
     },
   },
+  {
+    // Test files assert on stored config literals — `expect(cfg.broadcastOpacity).toBe(0.85)`
+    // reads back a persisted constant, it does not compare a computed float. The rule's advice
+    // (use a range) would WEAKEN the assertion: 0.85 is exactly the value the store must hold,
+    // and a tolerance window would pass on a value the app should never produce.
+    files: ['src/**/__tests__/**/*.ts', 'src/**/*.test.ts'],
+    rules: {
+      'sonarjs/no-floating-point-equality': 'off',
+    },
+  },
 ];

@@ -22,7 +22,8 @@ pnpm dev                  # Vite dev server
 pnpm build                # Vite production build → dist/
 pnpm preview              # Preview the production build
 pnpm check-types          # svelte-check --tsconfig ./tsconfig.json
-pnpm lint                 # ESLint with --fix --cache (src only)
+pnpm lint                 # ESLint — non-mutating, fails on any warning
+pnpm lint:fix             # ESLint with auto-fix (rewrites source)
 pnpm format               # Prettier on src/
 pnpm test                 # Vitest (TZ=UTC, watch mode)
 pnpm test:run             # Vitest single run

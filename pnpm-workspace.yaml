@@ -22,4 +22,4 @@ overrides:
   # - js-yaml: GHSA-h67p-54hq-rp68 (moderate); patched 4.2.0.
   fast-uri: '^3.1.4'
   ws: '^8.21.0'
-  js-yaml: '^4.2.0'
+  js-yaml: '^5.0.0'

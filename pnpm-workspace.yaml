@@ -20,6 +20,6 @@ overrides:
   # - fast-uri: GHSA-q3j6-qgpj-74h6 + GHSA-v39h-62p7-jpjc (high); patched 3.1.4.
   # - ws: GHSA-96hv-2xvq-fx4p (high) + GHSA-58qx-3vcg-4xpx (moderate); patched 8.21.0.
   # - js-yaml: GHSA-h67p-54hq-rp68 (moderate); patched 4.2.0.
-  fast-uri: '^3.1.4'
+  fast-uri: '^4.0.0'
   ws: '^8.21.0'
   js-yaml: '^5.0.0'

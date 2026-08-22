@@ -4,6 +4,8 @@
  * and image URL from onlineResources.
  */
 
+import { isRosterCompetitor } from './rosterCompetitors';
+
 // Default to same hostname as the page, port 8383 — works on LAN without config
 const FACTORY_URL = import.meta.env.VITE_FACTORY_URL || `http://${window.location.hostname}:8383`;
 
@@ -45,6 +47,7 @@ export async function fetchRoster(tournamentId: string): Promise<Map<string, Pla
     const map = new Map<string, PlayerInfo>();
 
     for (const p of participants) {
+      if (!isRosterCompetitor(p)) continue;
       const info: PlayerInfo = {
         participantId: p.participantId,
         participantName: p.participantName ?? buildNameFromPerson(p.person),
@@ -75,10 +78,12 @@ export function getPlayer(participantId: string): PlayerInfo | undefined {
  * Look up a player, returning a fallback with just the ID as the name.
  */
 export function getPlayerOrFallback(participantId: string): PlayerInfo {
-  return rosterCache.get(participantId) ?? {
-    participantId,
-    participantName: participantId.slice(0, 8),
-  };
+  return (
+    rosterCache.get(participantId) ?? {
+      participantId,
+      participantName: participantId.slice(0, 8),
+    }
+  );
 }
 
 /**
@@ -119,8 +124,7 @@ function buildNameFromPerson(person: any): string {
  * Convention: extension named 'jerseyNumber' with a string or number value.
  */
 function resolveJerseyNumber(participant: any): string | undefined {
-  const ext = findExtension(participant, 'jerseyNumber')
-    ?? findExtension(participant?.person, 'jerseyNumber');
+  const ext = findExtension(participant, 'jerseyNumber') ?? findExtension(participant?.person, 'jerseyNumber');
   if (ext?.value !== undefined) return String(ext.value);
   return undefined;
 }

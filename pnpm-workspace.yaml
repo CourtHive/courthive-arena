@@ -20,6 +20,9 @@ overrides:
   # - fast-uri: GHSA-q3j6-qgpj-74h6 + GHSA-v39h-62p7-jpjc (high); patched 3.1.4.
   # - ws: GHSA-96hv-2xvq-fx4p (high) + GHSA-58qx-3vcg-4xpx (moderate); patched 8.21.0.
   # - js-yaml: GHSA-h67p-54hq-rp68 (moderate); patched 4.2.0.
-  fast-uri: '^4.0.0'
+  # A security FLOOR, not a range. It was '^4.0.0' for an earlier advisory and stopped being
+  # a floor when four more landed INSIDE 4.x (host confusion x2, SSRF x2), all first patched
+  # in 4.1.3 while the lockfile sat on 4.1.2. Pin the floor to the patched version.
+  fast-uri: '^4.1.3'
   ws: '^8.21.0'
   js-yaml: '^5.0.0'

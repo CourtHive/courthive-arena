@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/CourtHive/courthive-arena/compare/v0.2.0...v0.2.1) (2026-09-07)
+
+
+### Bug Fixes
+
+* **deps:** raise fast-uri to a patched version ([#45](https://github.com/CourtHive/courthive-arena/issues/45)) ([02c27f1](https://github.com/CourtHive/courthive-arena/commit/02c27f142f8a9e6b247e5db5ed09ab16c72bc33e))
+* **roster:** keep personnel and groups off the scoreboard ([#39](https://github.com/CourtHive/courthive-arena/issues/39)) ([8207124](https://github.com/CourtHive/courthive-arena/commit/820712470f8971ac7ad7513b50a88c65a5d4a6d7))
+
 ## [0.2.0](https://github.com/CourtHive/courthive-arena/compare/v0.1.0...v0.2.0) (2026-07-04)
 
 

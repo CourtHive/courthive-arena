@@ -1,0 +1,4 @@
+# Generated lockfiles — pnpm owns their format. Prettier reformatting them
+# produces a spurious full-file diff and drifts them from what `pnpm install`
+# writes, which is how this repo's lockfile came to be wrapped across lines.
+pnpm-lock.yaml

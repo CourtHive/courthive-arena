@@ -116,7 +116,7 @@ The factory / TODS types are **not** a dependency — relay payloads are consume
 ## Code Style / Conventions
 
 - **Svelte 5 runes only** — `$state` / `$derived` / `$props` / `$effect`; no legacy stores, no `export let`. Rune-bearing `.ts` files use the `.svelte.ts` extension.
-- **Package manager**: pnpm only (`pnpm@11.9.0` pinned; `engines.npm` set to `please-use-pnpm`). Node `>=22`.
+- **Package manager**: pnpm only (`pnpm@11.9.0` pinned; `engines.npm` set to `please-use-pnpm`). Node `>=24` (ecosystem minimum; `.nvmrc` 24).
 - **Styling**: component-scoped Svelte `<style>` blocks. There is no `styles/` CSS (the directory is empty) and there is no CSS framework. Theming is driven by `--arena-*` CSS variables (`--arena-accent`, `--arena-side1`, `--arena-side2`, `--arena-bg`, `--arena-text`) written to `:root` by `applyTheme()` from a chosen `THEME_PRESET`.
 - **Dark-only — does NOT follow the ecosystem `--tmx-*` light/dark token convention.** This app is intentionally dark-only for venue/broadcast screens: every theme preset uses a near-black background and light text, and `App.svelte` hardcodes a dark `body` background. There is no light mode and no `--tmx-*` tokens. Do not "add a light fallback" here as you would in TMX; if a genuine theming need arises, extend the `--arena-*` presets in `skinConfig.svelte.ts`.
 - **Config over routing**: no router — state is driven by URL query params (`?match=`, `?skin=`, `?theme=`) and `localStorage`.

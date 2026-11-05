@@ -18,8 +18,9 @@ name: release-please
 # The App needs Contents: Write + Pull requests: Write on this repo.
 #
 # Day-to-day flow:
-#   1. Land feature/fix PRs on master with conventional commits
-#      (feat:, fix:, chore:, docs:, etc.)
+#   1. Land feature/fix PRs on dev with conventional commits
+#      (feat:, fix:, chore:, docs:, etc.); checkpoint dev into master with a
+#      merge commit (this workflow runs on that push).
 #   2. The bot updates a `chore: release X.Y.Z` PR automatically
 #   3. Merge the release PR → GitHub release + tag are created
 #      and package.json is bumped.

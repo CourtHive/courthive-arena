@@ -1,4 +1,7 @@
 <script lang="ts">
+  import TeamSwatch from '../TeamSwatch.svelte';
+
+  // constants and types
   import type { SkinProps } from './skinProps';
 
   let { match, formatMs }: SkinProps = $props();
@@ -11,12 +14,12 @@
   <div class="minimal-scores">
     <div class="minimal-row" class:serving={match.server === 0} class:winner={isComplete && match.winningSide === 1}>
       <div class="minimal-serve-bar" class:active={match.server === 0}></div>
-      <div class="minimal-team">{match.side1Name ?? 'Team 1'}</div>
+      <div class="minimal-team"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
       <div class="minimal-arc">{match.arcScore?.side1 ?? 0}</div>
     </div>
     <div class="minimal-row" class:serving={match.server === 1} class:winner={isComplete && match.winningSide === 2}>
       <div class="minimal-serve-bar" class:active={match.server === 1}></div>
-      <div class="minimal-team">{match.side2Name ?? 'Team 2'}</div>
+      <div class="minimal-team"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
       <div class="minimal-arc">{match.arcScore?.side2 ?? 0}</div>
     </div>
   </div>
@@ -91,7 +94,9 @@
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     opacity: 0.5;
-    transition: opacity 0.2s, color 0.2s;
+    transition:
+      opacity 0.2s,
+      color 0.2s;
   }
   .minimal-clock.clock-active {
     opacity: 1;

@@ -1,4 +1,7 @@
 <script lang="ts">
+  import TeamSwatch from './TeamSwatch.svelte';
+
+  // constants and types
   import type { MatchState } from '../stores/matchState.svelte';
 
   let { match }: { match: MatchState } = $props();
@@ -13,7 +16,7 @@
 
   <div class="final-score">
     <div class="final-team" class:winner={match.winningSide === 1}>
-      <div class="final-team-name">{match.side1Name ?? 'Team 1'}</div>
+      <div class="final-team-name"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
       <div class="final-arc">{match.arcScore?.side1 ?? 0}</div>
     </div>
 
@@ -21,7 +24,7 @@
 
     <div class="final-team" class:winner={match.winningSide === 2}>
       <div class="final-arc">{match.arcScore?.side2 ?? 0}</div>
-      <div class="final-team-name">{match.side2Name ?? 'Team 2'}</div>
+      <div class="final-team-name"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
     </div>
   </div>
 

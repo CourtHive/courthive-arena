@@ -1,4 +1,7 @@
 <script lang="ts">
+  import TeamSwatch from '../TeamSwatch.svelte';
+
+  // constants and types
   import type { SkinProps } from './skinProps';
 
   let { match, config, formatMs }: SkinProps = $props();
@@ -19,7 +22,7 @@
   <!-- Side 1 -->
   <div class="jumbo-row" class:serving={match.server === 0} class:winner={isComplete && match.winningSide === 1}>
     <div class="jumbo-side-color side-1-bar"></div>
-    <div class="jumbo-team">{match.side1Name ?? 'Team 1'}</div>
+    <div class="jumbo-team"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
     <div class="jumbo-score-group">
       <div class="jumbo-arc">{match.arcScore?.side1 ?? 0}</div>
       {#if showBolt && match.boltScore && !isComplete}
@@ -57,7 +60,7 @@
   <!-- Side 2 -->
   <div class="jumbo-row" class:serving={match.server === 1} class:winner={isComplete && match.winningSide === 2}>
     <div class="jumbo-side-color side-2-bar"></div>
-    <div class="jumbo-team">{match.side2Name ?? 'Team 2'}</div>
+    <div class="jumbo-team"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
     <div class="jumbo-score-group">
       <div class="jumbo-arc">{match.arcScore?.side2 ?? 0}</div>
       {#if showBolt && match.boltScore && !isComplete}
@@ -105,8 +108,12 @@
     border-radius: 3px;
     flex-shrink: 0;
   }
-  .side-1-bar { background: var(--arena-side1, #4fc3f7); }
-  .side-2-bar { background: var(--arena-side2, #ff7043); }
+  .side-1-bar {
+    background: var(--arena-side1, #4fc3f7);
+  }
+  .side-2-bar {
+    background: var(--arena-side2, #ff7043);
+  }
   .jumbo-team {
     font-size: 2.5em;
     font-weight: 700;
@@ -181,7 +188,9 @@
   .jumbo-serve-arrow {
     font-size: 1.5em;
     opacity: 0.15;
-    transition: opacity 0.2s, color 0.2s;
+    transition:
+      opacity 0.2s,
+      color 0.2s;
   }
   .jumbo-serve-arrow.active {
     opacity: 1;

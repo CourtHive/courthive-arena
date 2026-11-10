@@ -1,4 +1,7 @@
 <script lang="ts">
+  import TeamSwatch from '../TeamSwatch.svelte';
+
+  // constants and types
   import type { SkinProps } from './skinProps';
 
   let { match, side1Player, side2Player, config, formatMs }: SkinProps = $props();
@@ -24,15 +27,19 @@
     </div>
 
     <div class="bug-team" class:serving={match.server === 0}>
-      <span class="bug-team-name">{match.side1Name ?? 'Team 1'}</span>
+      <span class="bug-team-name"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</span>
     </div>
 
     <!-- Score -->
     <div class="bug-score-block">
       <div class="bug-arc">
-        <span class="bug-arc-num" class:winner={isComplete && match.winningSide === 1}>{match.arcScore?.side1 ?? 0}</span>
+        <span class="bug-arc-num" class:winner={isComplete && match.winningSide === 1}
+          >{match.arcScore?.side1 ?? 0}</span
+        >
         <span class="bug-dash">—</span>
-        <span class="bug-arc-num" class:winner={isComplete && match.winningSide === 2}>{match.arcScore?.side2 ?? 0}</span>
+        <span class="bug-arc-num" class:winner={isComplete && match.winningSide === 2}
+          >{match.arcScore?.side2 ?? 0}</span
+        >
       </div>
       {#if match.boltScore && !isComplete}
         <div class="bug-bolt">
@@ -44,7 +51,7 @@
     </div>
 
     <div class="bug-team" class:serving={match.server === 1}>
-      <span class="bug-team-name">{match.side2Name ?? 'Team 2'}</span>
+      <span class="bug-team-name"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</span>
     </div>
 
     <!-- Side 2 -->
@@ -66,7 +73,9 @@
         <div class="bug-clock-value">{formatMs(match.clock.breakRemainingMs ?? 0)}</div>
         <div class="bug-clock-label">BREAK</div>
       {:else}
-        <div class="bug-clock-value" class:clock-active={match.clock.activeClock === 'bolt'}>{formatMs(match.clock.boltTimerRemainingMs)}</div>
+        <div class="bug-clock-value" class:clock-active={match.clock.activeClock === 'bolt'}>
+          {formatMs(match.clock.boltTimerRemainingMs)}
+        </div>
         <div class="bug-clock-label">BOLT</div>
       {/if}
     </div>

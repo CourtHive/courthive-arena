@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 
 // Default to same hostname as the page, port 8384 — works on LAN without config
-const RELAY_URL = import.meta.env.VITE_RELAY_URL || `http://${window.location.hostname}:8384`;
+const RELAY_URL = import.meta.env.VITE_RELAY_URL || `http://${globalThis.location.hostname}:8384`;
 
 let socket: Socket | null = null;
 
@@ -9,6 +9,7 @@ export type RelayEventHandler = (data: any) => void;
 
 export interface RelaySubscription {
   onScore: (handler: RelayEventHandler) => void;
+  onTeamBranding: (handler: RelayEventHandler) => void;
   onIntennse: (handler: RelayEventHandler) => void;
   onClockSync: (handler: RelayEventHandler) => void;
   onHistory: (handler: RelayEventHandler) => void;
@@ -21,7 +22,7 @@ export interface RelaySubscription {
  * Returns the raw socket for lifecycle management.
  */
 export function connect(): Socket {
-  if (socket?.connected) return socket;
+  if (socket) return socket;
 
   socket = io(`${RELAY_URL}/live`, {
     transports: ['websocket'],
@@ -50,7 +51,9 @@ export function connect(): Socket {
  */
 export function subscribeToMatch(matchUpId: string): RelaySubscription {
   const s = connect();
-  s.emit('subscribe', matchUpId);
+  const rejoin = () => s.emit('subscribe', matchUpId);
+  s.on('connect', rejoin);
+  if (s.connected) rejoin();
 
   const handlers: Array<[string, RelayEventHandler]> = [];
 
@@ -64,11 +67,13 @@ export function subscribeToMatch(matchUpId: string): RelaySubscription {
 
   return {
     onScore: (h) => on('score', h),
+    onTeamBranding: (h) => on('teamBranding', h),
     onIntennse: (h) => on('intennse', h),
     onClockSync: (h) => on('clockSync', h),
     onHistory: (h) => on('history', h),
     onTick: (h) => on('scorebug-tick', h),
     unsubscribe: () => {
+      s.off('connect', rejoin);
       s.emit('unsubscribe', matchUpId);
       for (const [event, handler] of handlers) {
         s.off(event, handler);
@@ -93,6 +98,7 @@ export function subscribeToTournament(tournamentId: string): RelaySubscription {
 
   return {
     onScore: (h) => on('score', h),
+    onTeamBranding: (h) => on('teamBranding', h),
     onIntennse: (h) => on('intennse', h),
     onClockSync: (h) => on('clockSync', h),
     onHistory: (h) => on('history', h),

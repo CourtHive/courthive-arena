@@ -1,7 +1,9 @@
 <script lang="ts">
-  import type { MatchState } from '../stores/matchState.svelte';
-  import type { ClockState } from '../stores/matchState.svelte';
   import { getPlayerOrFallback } from '../relay/roster';
+  import TeamSwatch from './TeamSwatch.svelte';
+
+  // constants and types
+  import type { MatchState, ClockState } from '../stores/matchState.svelte';
 
   let { match, clock }: { match: MatchState; clock: ClockState } = $props();
 
@@ -46,19 +48,19 @@
 
   <div class="score-summary">
     <div class="team-score">
-      <div class="team-name">{match.side1Name ?? 'Team 1'}</div>
+      <div class="team-name"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
       <div class="arc-total">{match.arcScore?.side1 ?? 0}</div>
     </div>
     <div class="divider">—</div>
     <div class="team-score">
       <div class="arc-total">{match.arcScore?.side2 ?? 0}</div>
-      <div class="team-name">{match.side2Name ?? 'Team 2'}</div>
+      <div class="team-name"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
     </div>
   </div>
 
   <div class="stats-grid">
     <div class="stats-column">
-      <div class="column-header">{match.side1Name ?? 'Team 1'}</div>
+      <div class="column-header"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
       {#each side1Stats as { player, stats }}
         <div class="stat-row">
           <div class="stat-player">
@@ -76,7 +78,7 @@
     </div>
 
     <div class="stats-column">
-      <div class="column-header">{match.side2Name ?? 'Team 2'}</div>
+      <div class="column-header"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
       {#each side2Stats as { player, stats }}
         <div class="stat-row">
           <div class="stat-player">

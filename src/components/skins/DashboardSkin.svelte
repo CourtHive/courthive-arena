@@ -1,6 +1,9 @@
 <script lang="ts">
-  import PenaltyBox from '../PenaltyBox.svelte';
   import { getPlayerOrFallback } from '../../relay/roster';
+  import TeamSwatch from '../TeamSwatch.svelte';
+  import PenaltyBox from '../PenaltyBox.svelte';
+
+  // constants and types
   import type { SkinProps } from './skinProps';
 
   let { match, side1Player, side2Player, formatMs }: SkinProps = $props();
@@ -34,7 +37,9 @@
     <div class="dash-team-block side-1">
       <div class="dash-side-bar"></div>
       <div class="dash-team-info">
-        <div class="dash-team-name" class:serving={match.server === 0}>{match.side1Name ?? 'Team 1'}</div>
+        <div class="dash-team-name" class:serving={match.server === 0}>
+          <TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}
+        </div>
         {#if side1Player}
           <div class="dash-active-player">
             {#if side1Player.jerseyNumber}<span class="dash-jersey">#{side1Player.jerseyNumber}</span>{/if}
@@ -61,7 +66,9 @@
       {:else}
         <div class="dash-clock-block">
           <div class="dash-clock-label">BOLT</div>
-          <div class="dash-clock-value" class:active={match.clock.activeClock === 'bolt'}>{formatMs(match.clock.boltTimerRemainingMs)}</div>
+          <div class="dash-clock-value" class:active={match.clock.activeClock === 'bolt'}>
+            {formatMs(match.clock.boltTimerRemainingMs)}
+          </div>
         </div>
         <div class="dash-serve-info">
           {#if match.server !== undefined}
@@ -85,7 +92,9 @@
         {/if}
       </div>
       <div class="dash-team-info right">
-        <div class="dash-team-name" class:serving={match.server === 1}>{match.side2Name ?? 'Team 2'}</div>
+        <div class="dash-team-name" class:serving={match.server === 1}>
+          <TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}
+        </div>
         {#if side2Player}
           <div class="dash-active-player">
             {#if side2Player.jerseyNumber}<span class="dash-jersey">#{side2Player.jerseyNumber}</span>{/if}
@@ -100,7 +109,7 @@
   <!-- Stats table -->
   <div class="dash-stats">
     <div class="dash-stats-panel">
-      <div class="dash-panel-header">{match.side1Name ?? 'Team 1'}</div>
+      <div class="dash-panel-header"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
       {#if side1Stats.length > 0}
         <div class="dash-stat-header-row">
           <span class="dash-stat-name-col">Player</span>
@@ -127,7 +136,7 @@
     </div>
 
     <div class="dash-stats-panel">
-      <div class="dash-panel-header">{match.side2Name ?? 'Team 2'}</div>
+      <div class="dash-panel-header"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
       {#if side2Stats.length > 0}
         <div class="dash-stat-header-row">
           <span class="dash-stat-name-col">Player</span>
@@ -280,7 +289,9 @@
   }
   .dash-arrow {
     opacity: 0.15;
-    transition: opacity 0.2s, color 0.2s;
+    transition:
+      opacity 0.2s,
+      color 0.2s;
   }
   .dash-arrow.active {
     opacity: 1;

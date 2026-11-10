@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { teamPaint } from '../relay/teamPaint';
   import TeamSwatch from './TeamSwatch.svelte';
 
   // constants and types
@@ -15,15 +16,25 @@
   <div class="final-badge">FINAL</div>
 
   <div class="final-score">
-    <div class="final-team" class:winner={match.winningSide === 1}>
+    <div
+      class="final-team"
+      data-team-panel="1"
+      style={teamPaint(match, 1, 'team')}
+      class:winner={match.winningSide === 1}
+    >
       <div class="final-team-name"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
-      <div class="final-arc">{match.arcScore?.side1 ?? 0}</div>
+      <div class="final-arc" data-team-score="1" style={teamPaint(match, 1, 'score')}>{match.arcScore?.side1 ?? 0}</div>
     </div>
 
     <div class="final-divider">—</div>
 
-    <div class="final-team" class:winner={match.winningSide === 2}>
-      <div class="final-arc">{match.arcScore?.side2 ?? 0}</div>
+    <div
+      class="final-team"
+      data-team-panel="2"
+      style={teamPaint(match, 2, 'team')}
+      class:winner={match.winningSide === 2}
+    >
+      <div class="final-arc" data-team-score="2" style={teamPaint(match, 2, 'score')}>{match.arcScore?.side2 ?? 0}</div>
       <div class="final-team-name"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
     </div>
   </div>

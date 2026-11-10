@@ -87,10 +87,10 @@
 
   // Transient match branding never enters persisted skin preferences. Existing side tokens paint accents only.
   const side1Color = $derived(
-    config.customColors.side1 ?? match.teamBranding?.teams[1]?.colors?.primary ?? getResolvedTheme().side1,
+    config.customColors.side1 ?? match.teamBranding?.teams[1]?.colors?.roles['team.accent'] ?? getResolvedTheme().side1,
   );
   const side2Color = $derived(
-    config.customColors.side2 ?? match.teamBranding?.teams[2]?.colors?.primary ?? getResolvedTheme().side2,
+    config.customColors.side2 ?? match.teamBranding?.teams[2]?.colors?.roles['team.accent'] ?? getResolvedTheme().side2,
   );
 
   let skinProps = $derived({
@@ -122,6 +122,22 @@
 </div>
 
 <style>
+  .scoreboard :global([data-team-panel][style*='background-color']),
+  .scoreboard :global(.jumbo-row:has([data-team-panel][style*='background-color'])),
+  .scoreboard :global(.minimal-row:has([data-team-panel][style*='background-color'])) {
+    opacity: 1;
+  }
+  .scoreboard :global([data-team-panel][style*='background-color'] .team-name),
+  .scoreboard :global([data-team-panel][style*='background-color'] .dash-team-name),
+  .scoreboard :global([data-team-panel][style*='background-color'] .bug-team-name) {
+    color: inherit;
+  }
+  .scoreboard :global([data-team-score][style*='background-color'] .bolt-score),
+  .scoreboard :global([data-team-score][style*='background-color'] .dash-bolt),
+  .scoreboard :global([data-team-score][style*='background-color'] .jumbo-bolt) {
+    opacity: 1;
+  }
+
   .scoreboard {
     width: 100%;
     height: 100%;

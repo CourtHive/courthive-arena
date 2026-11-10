@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getPlayerOrFallback } from '../relay/roster';
+  import { teamPaint } from '../relay/teamPaint';
   import TeamSwatch from './TeamSwatch.svelte';
 
   // constants and types
@@ -47,20 +48,22 @@
   </div>
 
   <div class="score-summary">
-    <div class="team-score">
+    <div class="team-score" data-team-panel="1" style={teamPaint(match, 1, 'team')}>
       <div class="team-name"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
-      <div class="arc-total">{match.arcScore?.side1 ?? 0}</div>
+      <div class="arc-total" data-team-score="1" style={teamPaint(match, 1, 'score')}>{match.arcScore?.side1 ?? 0}</div>
     </div>
     <div class="divider">—</div>
-    <div class="team-score">
-      <div class="arc-total">{match.arcScore?.side2 ?? 0}</div>
+    <div class="team-score" data-team-panel="2" style={teamPaint(match, 2, 'team')}>
+      <div class="arc-total" data-team-score="2" style={teamPaint(match, 2, 'score')}>{match.arcScore?.side2 ?? 0}</div>
       <div class="team-name"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
     </div>
   </div>
 
   <div class="stats-grid">
     <div class="stats-column">
-      <div class="column-header"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
+      <div class="column-header" data-team-panel="1" style={teamPaint(match, 1, 'team')}>
+        <TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}
+      </div>
       {#each side1Stats as { player, stats }}
         <div class="stat-row">
           <div class="stat-player">
@@ -78,7 +81,9 @@
     </div>
 
     <div class="stats-column">
-      <div class="column-header"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
+      <div class="column-header" data-team-panel="2" style={teamPaint(match, 2, 'team')}>
+        <TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}
+      </div>
       {#each side2Stats as { player, stats }}
         <div class="stat-row">
           <div class="stat-player">

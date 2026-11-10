@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getPlayerOrFallback } from '../../relay/roster';
+  import { teamPaint } from '../../relay/teamPaint';
   import TeamSwatch from '../TeamSwatch.svelte';
   import PenaltyBox from '../PenaltyBox.svelte';
 
@@ -37,8 +38,15 @@
     <div class="dash-team-block side-1">
       <div class="dash-side-bar"></div>
       <div class="dash-team-info">
-        <div class="dash-team-name" class:serving={match.server === 0}>
-          <TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}
+        <div
+          class="dash-team-name"
+          data-team-panel="1"
+          style={teamPaint(match, 1, 'team')}
+          class:serving={match.server === 0}
+        >
+          <TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}{#if isComplete && match.winningSide === 1}<span>
+              · Winner</span
+            >{/if}
         </div>
         {#if side1Player}
           <div class="dash-active-player">
@@ -47,7 +55,7 @@
           </div>
         {/if}
       </div>
-      <div class="dash-score-col">
+      <div class="dash-score-col" data-team-score="1" style={teamPaint(match, 1, 'score')}>
         <div class="dash-arc">{match.arcScore?.side1 ?? 0}</div>
         {#if match.boltScore && !isComplete}
           <div class="dash-bolt">{match.boltScore.side1}</div>
@@ -85,15 +93,22 @@
     </div>
 
     <div class="dash-team-block side-2">
-      <div class="dash-score-col">
+      <div class="dash-score-col" data-team-score="2" style={teamPaint(match, 2, 'score')}>
         <div class="dash-arc">{match.arcScore?.side2 ?? 0}</div>
         {#if match.boltScore && !isComplete}
           <div class="dash-bolt">{match.boltScore.side2}</div>
         {/if}
       </div>
       <div class="dash-team-info right">
-        <div class="dash-team-name" class:serving={match.server === 1}>
-          <TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}
+        <div
+          class="dash-team-name"
+          data-team-panel="2"
+          style={teamPaint(match, 2, 'team')}
+          class:serving={match.server === 1}
+        >
+          <TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}{#if isComplete && match.winningSide === 2}<span>
+              · Winner</span
+            >{/if}
         </div>
         {#if side2Player}
           <div class="dash-active-player">
@@ -109,7 +124,11 @@
   <!-- Stats table -->
   <div class="dash-stats">
     <div class="dash-stats-panel">
-      <div class="dash-panel-header"><TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}</div>
+      <div class="dash-panel-header">
+        <TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}{#if isComplete && match.winningSide === 1}<span>
+            · Winner</span
+          >{/if}
+      </div>
       {#if side1Stats.length > 0}
         <div class="dash-stat-header-row">
           <span class="dash-stat-name-col">Player</span>
@@ -136,7 +155,11 @@
     </div>
 
     <div class="dash-stats-panel">
-      <div class="dash-panel-header"><TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}</div>
+      <div class="dash-panel-header">
+        <TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}{#if isComplete && match.winningSide === 2}<span>
+            · Winner</span
+          >{/if}
+      </div>
       {#if side2Stats.length > 0}
         <div class="dash-stat-header-row">
           <span class="dash-stat-name-col">Player</span>

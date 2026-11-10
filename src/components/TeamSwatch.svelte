@@ -6,7 +6,7 @@
   const colors = $derived(match.teamBranding?.teams[side]?.colors);
 </script>
 
-{#if colors}
+{#if colors?.roles['team.accent']}
   <span class="team-swatch" data-team-side={side} style:background={`var(--arena-side${side})`} aria-hidden="true"
   ></span>
 {/if}

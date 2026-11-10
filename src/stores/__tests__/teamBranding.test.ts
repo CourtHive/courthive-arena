@@ -5,7 +5,7 @@ import { getSkinConfig } from '../skinConfig.svelte';
 vi.mock('../../relay/roster', () => ({ mergeRelayRoster: vi.fn() }));
 const frame = {
   matchUpId: 'one',
-  teams: { 1: { participantId: 'alpha', participantName: 'Alpha', colors: { primary: '#aabbcc' } } },
+  teams: { 1: { participantId: 'alpha', participantName: 'Alpha', colors: { roles: { 'team.accent': '#aabbcc' } } } },
 };
 beforeEach(() => resetMatchState('one'));
 
@@ -14,7 +14,7 @@ describe('match-scoped team branding', () => {
     const preferences = JSON.stringify(getSkinConfig());
     applyTeamBranding(frame);
     expect(getMatchState().side1Name).toBe('Alpha');
-    expect(getMatchState().teamBranding?.teams[1]?.colors?.primary).toBe('#AABBCC');
+    expect(getMatchState().teamBranding?.teams[1]?.colors?.roles['team.accent']).toBe('#AABBCC');
     applyIntennseSnapshot({ matchUpId: 'one', boltScore: { side1: 3, side2: 2 } });
     expect(getMatchState().teamBranding?.teams[1]?.participantId).toBe('alpha');
     expect(JSON.stringify(getSkinConfig())).toBe(preferences);
@@ -35,7 +35,7 @@ describe('match-scoped team branding', () => {
     for (const teams of [
       [],
       { 0: { participantId: 'a' } },
-      { 1: { participantId: 'alpha', colors: { primary: 'red' } } },
+      { 1: { participantId: 'alpha', colors: { roles: { 'team.accent': 'red' } } } },
     ]) {
       applyTeamBranding({ matchUpId: 'one', teams });
       expect(JSON.stringify(getMatchState())).toBe(before);

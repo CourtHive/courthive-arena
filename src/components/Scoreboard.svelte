@@ -1,21 +1,22 @@
 <script lang="ts">
-  import ArenaSkin from './skins/ArenaSkin.svelte';
+  import { getSkinConfig, getResolvedTheme, applyTheme } from '../stores/skinConfig.svelte';
+  import { subscribeToMatch, type RelaySubscription } from '../relay/client';
+  import { fetchRoster, getPlayerOrFallback } from '../relay/roster';
   import BroadcastSkin from './skins/BroadcastSkin.svelte';
   import JumbotronSkin from './skins/JumbotronSkin.svelte';
   import DashboardSkin from './skins/DashboardSkin.svelte';
   import MinimalSkin from './skins/MinimalSkin.svelte';
+  import ArenaSkin from './skins/ArenaSkin.svelte';
+  import { onMount } from 'svelte';
   import {
     getMatchState,
+    applyTeamBranding,
     applyIntennseSnapshot,
     applyScoreUpdate,
     applyClockTick,
     applyClockSync,
     resetMatchState,
   } from '../stores/matchState.svelte';
-  import { getSkinConfig, applyTheme } from '../stores/skinConfig.svelte';
-  import { subscribeToMatch, type RelaySubscription } from '../relay/client';
-  import { fetchRoster, getPlayerOrFallback } from '../relay/roster';
-  import { onMount, onDestroy } from 'svelte';
 
   let { matchUpId }: { matchUpId: string } = $props();
 
@@ -37,17 +38,26 @@
     return id ? getPlayerOrFallback(id) : undefined;
   });
 
-  onMount(async () => {
-    applyTheme();
+  onMount(() => applyTheme());
+
+  $effect(() => {
+    connected = false;
+    rosterLoaded = false;
     resetMatchState(matchUpId);
     subscription = subscribeToMatch(matchUpId);
+
+    subscription.onTeamBranding((data) => {
+      if (applyTeamBranding(data)) connected = true;
+    });
 
     subscription.onIntennse((data) => {
       applyIntennseSnapshot(data);
       connected = true;
 
       if (!rosterLoaded && data.tournamentId) {
-        fetchRoster(data.tournamentId).then(() => { rosterLoaded = true; });
+        fetchRoster(data.tournamentId).then(() => {
+          rosterLoaded = true;
+        });
       }
     });
 
@@ -63,10 +73,8 @@
     subscription.onClockSync((data) => {
       applyClockSync(data);
     });
-  });
-
-  onDestroy(() => {
-    subscription?.unsubscribe();
+    const current = subscription;
+    return () => current.unsubscribe();
   });
 
   function formatMs(ms: number): string {
@@ -77,6 +85,14 @@
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  // Transient match branding never enters persisted skin preferences. Existing side tokens paint accents only.
+  const side1Color = $derived(
+    config.customColors.side1 ?? match.teamBranding?.teams[1]?.colors?.roles['team.accent'] ?? getResolvedTheme().side1,
+  );
+  const side2Color = $derived(
+    config.customColors.side2 ?? match.teamBranding?.teams[2]?.colors?.roles['team.accent'] ?? getResolvedTheme().side2,
+  );
+
   let skinProps = $derived({
     match,
     side1Player: side1Player(),
@@ -86,7 +102,7 @@
   });
 </script>
 
-<div class="scoreboard">
+<div class="scoreboard" style:--arena-side1={side1Color} style:--arena-side2={side2Color}>
   {#if !connected}
     <div class="waiting">
       <div class="waiting-text">Waiting for match data...</div>
@@ -106,6 +122,22 @@
 </div>
 
 <style>
+  .scoreboard :global([data-team-panel][style*='background-color']),
+  .scoreboard :global(.jumbo-row:has([data-team-panel][style*='background-color'])),
+  .scoreboard :global(.minimal-row:has([data-team-panel][style*='background-color'])) {
+    opacity: 1;
+  }
+  .scoreboard :global([data-team-panel][style*='background-color'] .team-name),
+  .scoreboard :global([data-team-panel][style*='background-color'] .dash-team-name),
+  .scoreboard :global([data-team-panel][style*='background-color'] .bug-team-name) {
+    color: inherit;
+  }
+  .scoreboard :global([data-team-score][style*='background-color'] .bolt-score),
+  .scoreboard :global([data-team-score][style*='background-color'] .dash-bolt),
+  .scoreboard :global([data-team-score][style*='background-color'] .jumbo-bolt) {
+    opacity: 1;
+  }
+
   .scoreboard {
     width: 100%;
     height: 100%;

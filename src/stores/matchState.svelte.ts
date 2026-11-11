@@ -1,3 +1,4 @@
+import { parseTeamBranding, type TeamBrandingSnapshot } from '../relay/teamBranding';
 /**
  * Reactive match state store using Svelte 5 runes.
  * Receives intennse snapshots from the relay and exposes
@@ -20,6 +21,7 @@ export interface MatchState {
   // Teams
   side1Name?: string;
   side2Name?: string;
+  teamBranding?: TeamBrandingSnapshot;
 
   // Score
   scoreStringSide1?: string;
@@ -127,4 +129,19 @@ export function applyClockSync(data: any): void {
     state.clock.serveClockRemainingMs = data.serveClockRemainingMs;
   }
   state.clock.activeClock = data.activeClock ?? state.clock.activeClock;
+}
+
+/** Metadata is a complete replacement, scoped to the selected match. Invalid frames leave state untouched. */
+export function applyTeamBranding(data: unknown): boolean {
+  const snapshot = parseTeamBranding(data);
+  if (!snapshot || snapshot.matchUpId !== state.matchUpId) return false;
+  const previous = state.teamBranding;
+  state.teamBranding = snapshot;
+  for (const side of [1, 2] as const) {
+    const team = snapshot.teams[side];
+    const key = side === 1 ? 'side1Name' : 'side2Name';
+    if (team?.participantName !== undefined) state[key] = team.participantName;
+    else if (previous?.teams[side]?.participantId !== team?.participantId) state[key] = undefined;
+  }
+  return true;
 }

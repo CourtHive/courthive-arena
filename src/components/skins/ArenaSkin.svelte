@@ -1,8 +1,12 @@
 <script lang="ts">
+  import MatchComplete from '../MatchComplete.svelte';
+  import { teamPaint } from '../../relay/teamPaint';
+  import BreakOverlay from '../BreakOverlay.svelte';
+  import TeamSwatch from '../TeamSwatch.svelte';
   import PlayerCard from '../PlayerCard.svelte';
   import PenaltyBox from '../PenaltyBox.svelte';
-  import BreakOverlay from '../BreakOverlay.svelte';
-  import MatchComplete from '../MatchComplete.svelte';
+
+  // constants and types
   import type { SkinProps } from './skinProps';
 
   let { match, side1Player, side2Player, formatMs }: SkinProps = $props();
@@ -22,11 +26,18 @@
   {:else}
     <div class="play-layout">
       <div class="side-column">
-        <div class="team-name" class:serving={match.server === 0}>{match.side1Name ?? 'Team 1'}</div>
+        <div
+          class="team-name"
+          data-team-panel="1"
+          style={teamPaint(match, 1, 'team')}
+          class:serving={match.server === 0}
+        >
+          <TeamSwatch {match} side={1} />{match.side1Name ?? 'Team 1'}
+        </div>
         {#if side1Player}
           <PlayerCard player={side1Player} side={1} isServing={match.server === 0} />
         {/if}
-        <div class="side-score">
+        <div class="side-score" data-team-score="1" style={teamPaint(match, 1, 'score')}>
           <div class="arc-score">{match.arcScore?.side1 ?? 0}</div>
           {#if match.boltScore}
             <div class="bolt-score">{match.boltScore.side1}</div>
@@ -65,11 +76,18 @@
       </div>
 
       <div class="side-column">
-        <div class="team-name" class:serving={match.server === 1}>{match.side2Name ?? 'Team 2'}</div>
+        <div
+          class="team-name"
+          data-team-panel="2"
+          style={teamPaint(match, 2, 'team')}
+          class:serving={match.server === 1}
+        >
+          <TeamSwatch {match} side={2} />{match.side2Name ?? 'Team 2'}
+        </div>
         {#if side2Player}
           <PlayerCard player={side2Player} side={2} isServing={match.server === 1} />
         {/if}
-        <div class="side-score">
+        <div class="side-score" data-team-score="2" style={teamPaint(match, 2, 'score')}>
           <div class="arc-score">{match.arcScore?.side2 ?? 0}</div>
           {#if match.boltScore}
             <div class="bolt-score">{match.boltScore.side2}</div>

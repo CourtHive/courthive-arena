@@ -1,13 +1,14 @@
 <script lang="ts">
   import type { MatchState } from '../stores/matchState.svelte';
+  import { teamPaint } from '../relay/teamPaint';
 
   let { match }: { match: MatchState } = $props();
 </script>
 
 <div class="score-panel">
-  <div class="team-row" class:serving={match.server === 0}>
+  <div class="team-row" data-team-panel="1" style={teamPaint(match, 1, 'team')} class:serving={match.server === 0}>
     <div class="team-name">{match.side1Name ?? 'Team 1'}</div>
-    <div class="scores">
+    <div class="scores" data-team-score="1" style={teamPaint(match, 1, 'score')}>
       {#if match.arcScore}
         <div class="arc-score">{match.arcScore.side1}</div>
       {/if}
@@ -17,9 +18,9 @@
     </div>
   </div>
 
-  <div class="team-row" class:serving={match.server === 1}>
+  <div class="team-row" data-team-panel="2" style={teamPaint(match, 2, 'team')} class:serving={match.server === 1}>
     <div class="team-name">{match.side2Name ?? 'Team 2'}</div>
-    <div class="scores">
+    <div class="scores" data-team-score="2" style={teamPaint(match, 2, 'score')}>
       {#if match.arcScore}
         <div class="arc-score">{match.arcScore.side2}</div>
       {/if}

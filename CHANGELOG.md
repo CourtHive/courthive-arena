@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/CourtHive/courthive-arena/compare/v0.2.1...v0.3.0) (2026-11-11)
+
+
+### Features
+
+* render readable team and score roles across arena skins ([#62](https://github.com/CourtHive/courthive-arena/issues/62)) ([0a1a1b6](https://github.com/CourtHive/courthive-arena/commit/0a1a1b6b218065d4649bda2383c400e7a043b8b2))
+
 ## [0.2.1](https://github.com/CourtHive/courthive-arena/compare/v0.2.0...v0.2.1) (2026-09-07)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "courthive-arena",
-  "packageManager": "pnpm@12.18.0",
+  "packageManager": "pnpm@12.21.0",
   "version": "0.3.1",
   "private": true,
   "type": "module",
@@ -38,8 +38,8 @@
     "@commitlint/config-conventional": "21.2.4",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tsconfig/svelte": "^5.0.4",
-    "@typescript-eslint/eslint-plugin": "8.72.1",
-    "@typescript-eslint/parser": "8.72.1",
+    "@typescript-eslint/eslint-plugin": "8.72.2",
+    "@typescript-eslint/parser": "8.72.2",
     "@vitest/coverage-v8": "5.1.0",
     "@vitest/ui": "5.1.0",
     "cz-git": "1.14.0",

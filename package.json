@@ -30,7 +30,7 @@
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {
-    "courthive-components": "7.19.1",
+    "courthive-components": "7.19.2",
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {

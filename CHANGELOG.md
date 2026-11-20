@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.3](https://github.com/CourtHive/courthive-arena/compare/v0.3.2...v0.3.3) (2026-11-20)
+
+
+### Bug Fixes
+
+* **deps:** update courthive-components to 7.18.0 ([#78](https://github.com/CourtHive/courthive-arena/issues/78)) ([96cfeee](https://github.com/CourtHive/courthive-arena/commit/96cfeee88df4b338e09e8eef0157573bc5d82588))
+* **deps:** update courthive-components to 7.19.0 ([#79](https://github.com/CourtHive/courthive-arena/issues/79)) ([287cc8f](https://github.com/CourtHive/courthive-arena/commit/287cc8f7f4e6f9f17027b15401ed96bd203e7a32))
+* **deps:** update courthive-components to 7.19.1 ([#80](https://github.com/CourtHive/courthive-arena/issues/80)) ([081654a](https://github.com/CourtHive/courthive-arena/commit/081654a9aa558b66d4c26c5e63f2b8a5ee937109))
+* **deps:** update courthive-components to 7.19.2 ([#81](https://github.com/CourtHive/courthive-arena/issues/81)) ([39f7a7f](https://github.com/CourtHive/courthive-arena/commit/39f7a7fa530573a2ed343796e8ad467ad309aa75))
+* **deps:** update courthive-components to 7.20.0 ([#82](https://github.com/CourtHive/courthive-arena/issues/82)) ([8f4b3be](https://github.com/CourtHive/courthive-arena/commit/8f4b3be41eec357d64733e1279f39c8e9f2263d6))
+
 ## [0.3.2](https://github.com/CourtHive/courthive-arena/compare/v0.3.1...v0.3.2) (2026-11-18)
 
 

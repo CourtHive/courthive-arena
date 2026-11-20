@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=24",
+    "node": ">=26",
     "pnpm": ">=8",
     "npm": "please-use-pnpm"
   },
@@ -30,7 +30,7 @@
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {
-    "courthive-components": "7.17.0",
+    "courthive-components": "7.20.0",
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {

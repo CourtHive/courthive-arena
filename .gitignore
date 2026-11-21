@@ -11,3 +11,8 @@ dist
 # change in every `git status` — and it is not merely cosmetic: a dirty repo
 # aborts the whole `bump-factory-consumers.sh` fan-out at preflight.
 .claude
+
+# Local pointer for agents that read AGENTS.md (it only says "follow CLAUDE.md"). Kept per
+# machine, never committed: untracked, it dirtied the checkout and the components fan-out
+# stopped at preflight, as for `.claude` above.
+AGENTS.md

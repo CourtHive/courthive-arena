@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.4](https://github.com/CourtHive/courthive-arena/compare/v0.3.3...v0.3.4) (2026-11-21)
+
+
+### Bug Fixes
+
+* **deps:** update courthive-components to 7.21.0 ([#87](https://github.com/CourtHive/courthive-arena/issues/87)) ([5da9fe1](https://github.com/CourtHive/courthive-arena/commit/5da9fe180accb19ad50afc725f78b7f61ec1e9b9))
+* **deps:** update courthive-components to 7.21.1 ([#89](https://github.com/CourtHive/courthive-arena/issues/89)) ([26dc1fa](https://github.com/CourtHive/courthive-arena/commit/26dc1fa5ff23379eed718daba26fb92db876b41a))
+* **types:** turn strictNullChecks on, so Svelte 5.59's mount() types check ([#88](https://github.com/CourtHive/courthive-arena/issues/88)) ([679c370](https://github.com/CourtHive/courthive-arena/commit/679c3706b3a8a7f6282dfcbdbf87e9ad6782f43a))
+
 ## [0.3.3](https://github.com/CourtHive/courthive-arena/compare/v0.3.2...v0.3.3) (2026-11-20)
 
 

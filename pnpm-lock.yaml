@@ -182,8 +182,8 @@ importers:
   .:
     dependencies:
       courthive-components:
-        specifier: 7.21.1
-        version: 7.21.1(@tiptap/pm@3.34.0)(tods-competition-factory@7.44.0)
+        specifier: 7.22.0
+        version: 7.22.0(@tiptap/pm@3.34.0)(tods-competition-factory@7.44.0)
       socket.io-client:
         specifier: ^4.8.3
         version: 4.8.4
@@ -1001,8 +1001,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@7.21.1:
-    resolution: {integrity: sha512-16bTsIY8xl/75ZTdoRO2p346hr/8jmZd88BXDFtEGKyT5lyiM/taTjG1J7m57wtx0GvvHitdtWVWcV/sprSLRg==}
+  courthive-components@7.22.0:
+    resolution: {integrity: sha512-cehipGXSROkFUFAB3RdUkh4wds8m4WW1H6962aWqa8EG3186tUpJNYPcQ7R0DR9bNaWMNQ1xQPt0l8QAp3e7iA==}
     engines: {node: '>=24'}
     peerDependencies:
       leaflet: ^1.9.4
@@ -2775,7 +2775,7 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  courthive-components@7.21.1(@tiptap/pm@3.34.0)(tods-competition-factory@7.44.0):
+  courthive-components@7.22.0(@tiptap/pm@3.34.0)(tods-competition-factory@7.44.0):
     dependencies:
       '@tiptap/core': 3.34.0(@tiptap/pm@3.34.0)
       '@tiptap/extension-color': 3.34.0(@tiptap/extension-text-style@3.34.0(@tiptap/core@3.34.0(@tiptap/pm@3.34.0)))

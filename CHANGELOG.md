@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.8](https://github.com/CourtHive/courthive-arena/compare/v0.3.7...v0.3.8) (2026-11-26)
+
+
+### Bug Fixes
+
+* **deps:** update courthive-components to 7.23.0 ([#107](https://github.com/CourtHive/courthive-arena/issues/107)) ([23e21b8](https://github.com/CourtHive/courthive-arena/commit/23e21b8c5cacef6f0cf74939208ce7332d064242))
+* **deps:** update courthive-components to 7.24.0 ([#109](https://github.com/CourtHive/courthive-arena/issues/109)) ([3728e26](https://github.com/CourtHive/courthive-arena/commit/3728e26d6d48cdf8c45063ab5744e62b1a968e60))
+
+
+### Documentation
+
+* keep the agent guide self-contained and ignore CLAUDE.local.md ([#108](https://github.com/CourtHive/courthive-arena/issues/108)) ([c5c6568](https://github.com/CourtHive/courthive-arena/commit/c5c65683a2cc22a989d32a10236f8b541bc886f0))
+
 ## [0.3.7](https://github.com/CourtHive/courthive-arena/compare/v0.3.6...v0.3.7) (2026-11-23)
 
 

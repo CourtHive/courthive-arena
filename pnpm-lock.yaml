@@ -182,8 +182,8 @@ importers:
   .:
     dependencies:
       courthive-components:
-        specifier: 7.22.2
-        version: 7.22.2(@tiptap/pm@3.34.0)(tods-competition-factory@7.44.0)
+        specifier: 7.24.0
+        version: 7.24.0(@tiptap/pm@3.34.0)(tods-competition-factory@7.49.0)
       socket.io-client:
         specifier: ^4.8.3
         version: 4.8.4
@@ -1005,12 +1005,12 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@7.22.2:
-    resolution: {integrity: sha512-nnpcsjS1tNGu3G/w4x9o4lWpl09l7bNjScMm9HOs5kexI17QHlpC1hjpdh/sW0HROeR42IJ1XNcdXkLclPR43w==}
+  courthive-components@7.24.0:
+    resolution: {integrity: sha512-XSinXnhnTvFDpscIAQ0sSJ/x0dzYUOcuisWEN3X3PrzVoz4peMU0YjCeH/BfAEyqf4TqdN7VuB8q6aeo0fxouA==}
     engines: {node: '>=24'}
     peerDependencies:
       leaflet: ^1.9.4
-      tods-competition-factory: ^7.44.0
+      tods-competition-factory: ^7.45.0
     peerDependenciesMeta:
       leaflet:
         optional: true
@@ -1825,8 +1825,8 @@ packages:
   tippy.js@6.3.7:
     resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
 
-  tods-competition-factory@7.44.0:
-    resolution: {integrity: sha512-ZU+EzjnPnU9McQDr1P9JivavEBUbvzqPKa1AiZcfvn4bkfqg1aQ559vXGmhgMMGDpp03QkJpEVA10sxQC+A7BQ==}
+  tods-competition-factory@7.49.0:
+    resolution: {integrity: sha512-MST1NJil6EIC0n2eMJ1l7I0r5c6+bbLLQLrmNj96M1aPn44/+3TZ5YvTo4CAw9Ul2w3FyvNx3HcLnIowzz7roA==}
     engines: {node: '>=24'}
 
   totalist@3.0.1:
@@ -2783,7 +2783,7 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  courthive-components@7.22.2(@tiptap/pm@3.34.0)(tods-competition-factory@7.44.0):
+  courthive-components@7.24.0(@tiptap/pm@3.34.0)(tods-competition-factory@7.49.0):
     dependencies:
       '@tiptap/core': 3.34.0(@tiptap/pm@3.34.0)
       '@tiptap/extension-color': 3.34.0(@tiptap/extension-text-style@3.34.0(@tiptap/core@3.34.0(@tiptap/pm@3.34.0)))
@@ -2800,7 +2800,7 @@ snapshots:
       focus-trap: 8.2.5
       timepicker-ui: 4.7.0
       tippy.js: 6.3.7
-      tods-competition-factory: 7.44.0
+      tods-competition-factory: 7.49.0
       vanillajs-datepicker: 1.3.4
     transitivePeerDependencies:
       - '@tiptap/pm'
@@ -3643,7 +3643,7 @@ snapshots:
     dependencies:
       '@popperjs/core': 2.11.8
 
-  tods-competition-factory@7.44.0: {}
+  tods-competition-factory@7.49.0: {}
 
   totalist@3.0.1: {}
 

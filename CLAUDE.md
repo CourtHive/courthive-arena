@@ -2,10 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Mentat Orchestration (READ FIRST)
-
-Before doing anything else, read `../Mentat/CLAUDE.md`, `../Mentat/TASKS.md`, `../Mentat/standards/coding-standards.md`, and every file in `../Mentat/in-flight/`. Mentat is the orchestration layer for the entire CourtHive ecosystem; its standards override per-repo conventions when they conflict. If you are about to start **building** (not just planning), you must claim a surface in `../Mentat/in-flight/` and run the air-traffic-control conflict check first. See the parent `../CLAUDE.md` "Mentat Orchestration" section for the full protocol.
-
 ## Branching — cut from `dev`, not `master` (CA, 2026-11-05)
 
 `dev` is this repo's integration branch, as in factory, TMX, components, CFS and the dev-flow services. **Branch from
@@ -21,8 +17,8 @@ created from `master` at `fe1d45b5`, byte-identical. **Renovate targets `dev`** 
 **`dev` and `master` are protected** (no deletion, no force-push) and `delete_branch_on_merge` is on: merged feature
 branches delete themselves, and the protected heads of checkpoint and back-merge PRs survive. The checkpoint merge
 (`dev` → `master`) is a **merge commit**, never a squash, so release-please's changelog keeps every conventional commit;
-so is the back-merge (`master` → `dev`) after each release. `mentat-build-all.sh` builds whatever
-branch mentat's checkout holds: keep it on `master`, so work on `dev` reaches `/arena/` only after a checkpoint.
+so is the back-merge (`master` → `dev`) after each release. Deploys build `master`, so work on `dev` reaches
+`/arena/` only after a checkpoint.
 
 ## Project Overview
 
@@ -142,4 +138,4 @@ The factory / TODS types are **not** a dependency — relay payloads are consume
 
 ## Ecosystem Standards
 
-This repo follows CourtHive ecosystem coding standards documented in the Mentat orchestration repo at `../Mentat/standards/coding-standards.md`, which override per-repo conventions when they conflict.
+This repo follows the CourtHive ecosystem coding standards. The conventions above are the ones that apply here.

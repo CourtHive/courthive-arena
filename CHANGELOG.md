@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.9](https://github.com/CourtHive/courthive-arena/compare/v0.3.8...v0.3.9) (2026-11-28)
+
+
+### Bug Fixes
+
+* **deps:** update courthive-components to 7.24.1 ([#113](https://github.com/CourtHive/courthive-arena/issues/113)) ([a2da535](https://github.com/CourtHive/courthive-arena/commit/a2da5353b5bab54d86fea7f0f45507f0ebc9bd2b))
+
 ## [0.3.8](https://github.com/CourtHive/courthive-arena/compare/v0.3.7...v0.3.8) (2026-11-26)
 
 
